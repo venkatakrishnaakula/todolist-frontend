@@ -64,12 +64,12 @@ export const TodoProvider = ({ children }) => {
     }
   };
 
-  const toggleTodo = async (id) => {
+  const toggleTodo = async (todo) => {
     try {
       setError(null);
-      const data = await todoService.toggleTodo(id);
-      setTodos(prev => prev.map(todo => 
-        todo._id === id ? data.todo : todo
+      const data = await todoService.toggleTodo(todo);
+      setTodos(prev => prev.map(t => 
+        t._id === todo._id ? data.todo : t
       ));
       return { success: true };
     } catch (error) {

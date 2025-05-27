@@ -11,8 +11,8 @@ const TodoItem = ({ todo }) => {
   
   const { toggleTodo, deleteTodo } = useTodos();
 
-  const handleToggle = async () => {
-    await toggleTodo(todo._id);
+  const handleToggle = async (e) => {
+    await toggleTodo({ ...todo, completed: e.target.checked });
   };
 
   const handleEdit = () => {

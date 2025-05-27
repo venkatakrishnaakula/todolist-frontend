@@ -81,6 +81,7 @@ const Login = () => {
               className={errors.email ? 'error' : ''}
               placeholder="Enter your email"
               disabled={loading}
+              autoComplete="username"
             />
             {errors.email && <span className="field-error">{errors.email}</span>}
           </div>
@@ -97,6 +98,7 @@ const Login = () => {
                 className={errors.password ? 'error' : ''}
                 placeholder="Enter your password"
                 disabled={loading}
+                autoComplete="current-password"
               />
               <button
                 type="button"

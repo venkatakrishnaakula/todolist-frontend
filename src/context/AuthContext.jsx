@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-    
+    // Only require token and userData for authentication
     if (token && userData) {
       setUser(JSON.parse(userData));
     }
@@ -23,11 +23,21 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       setLoading(true);
       const data = await authService.login(email, password);
-      
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      setUser(data.user);
-      
+      // Expecting data.token and data.refreshToken from backend
+      localStorage.setItem('token', data.tokens?.accessToken);
+      localStorage.setItem('refreshToken', data.tokens?.refreshToken);
+      // Map isVerified property if needed
+      let userObj = data.user;
+      if (userObj && userObj.verified !== undefined) {
+        userObj.isVerified = userObj.verified;
+      } else if (userObj && userObj.emailVerified !== undefined) {
+        userObj.isVerified = userObj.emailVerified;
+      } else if (userObj && userObj.isVerified === undefined) {
+        // fallback: assume verified if not present (customize as needed)
+        userObj.isVerified = true;
+      }
+      localStorage.setItem('user', JSON.stringify(userObj));
+      setUser(userObj);
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || 'Login failed';
@@ -38,11 +48,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signup = async (name, email, password) => {
+  const signup = async (firstName, lastName, email, password, username) => {
     try {
       setError(null);
       setLoading(true);
-      const data = await authService.signup(name, email, password);
+      const data = await authService.signup(firstName, lastName, email, password, username);
       return { success: true, message: data.message };
     } catch (error) {
       const message = error.response?.data?.message || 'Signup failed';
@@ -61,6 +71,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setUser(null);
       localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
       localStorage.removeItem('user');
     }
   };

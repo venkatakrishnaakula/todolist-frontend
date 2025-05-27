@@ -9,7 +9,9 @@ import '../../App.css';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -34,10 +36,22 @@ const Signup = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (formData.username.trim().length < 2) {
+      newErrors.username = 'Username must be at least 2 characters';
+    }
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    } else if (formData.firstName.trim().length < 2) {
+      newErrors.firstName = 'First name must be at least 2 characters';
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+    } else if (formData.lastName.trim().length < 2) {
+      newErrors.lastName = 'Last name must be at least 2 characters';
     }
 
     if (!formData.email) {
@@ -67,7 +81,13 @@ const Signup = () => {
     
     if (!validateForm()) return;
 
-    const result = await signup(formData.name, formData.email, formData.password);
+    const result = await signup(
+      formData.firstName,
+      formData.lastName,
+      formData.email,
+      formData.password,
+      formData.username
+    );
     
     if (result.success) {
       setSuccess('Account created successfully! Please check your email to verify your account.');
@@ -87,18 +107,47 @@ const Signup = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              id="username"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
-              className={errors.name ? 'error' : ''}
-              placeholder="Enter your full name"
+              className={errors.username ? 'error' : ''}
+              placeholder="Enter your username"
               disabled={loading}
             />
-            {errors.name && <span className="field-error">{errors.name}</span>}
+            {errors.username && <span className="field-error">{errors.username}</span>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              className={errors.firstName ? 'error' : ''}
+              placeholder="Enter your first name"
+              disabled={loading}
+            />
+            {errors.firstName && <span className="field-error">{errors.firstName}</span>}
+          </div>
+          <div className="form-group">
+            <label htmlFor="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              className={errors.lastName ? 'error' : ''}
+              placeholder="Enter your last name"
+              disabled={loading}
+            />
+            {errors.lastName && <span className="field-error">{errors.lastName}</span>}
           </div>
 
           <div className="form-group">

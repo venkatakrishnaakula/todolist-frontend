@@ -7,12 +7,15 @@ export const authService = {
       email,
       password,
     });
+    // Expecting response.data to have token, refreshToken, user
     return response.data;
   },
 
-  signup: async (name, email, password) => {
+  signup: async (firstName, lastName, email, password, username) => {
     const response = await api.post(API_ENDPOINTS.AUTH.SIGNUP, {
-      name,
+      username,
+      firstName,
+      lastName,
       email,
       password,
     });

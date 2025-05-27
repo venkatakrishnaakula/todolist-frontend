@@ -11,7 +11,7 @@ export const TODO_FILTERS = {
 export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: '/auth/login',
-    SIGNUP: '/auth/signup',
+    SIGNUP: '/auth/register',
     LOGOUT: '/auth/logout',
     VERIFY_EMAIL: '/auth/verify-email',
     RESEND_VERIFICATION: '/auth/resend-verification'

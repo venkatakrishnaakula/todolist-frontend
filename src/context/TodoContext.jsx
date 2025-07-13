@@ -82,9 +82,9 @@ export const TodoProvider = ({ children }) => {
   const filteredTodos = todos.filter(todo => {
     switch (filter) {
       case TODO_FILTERS.ACTIVE:
-        return !todo.completed;
+        return todo.status !== 'completed';
       case TODO_FILTERS.COMPLETED:
-        return todo.completed;
+        return todo.status === 'completed';
       default:
         return true;
     }
@@ -92,8 +92,8 @@ export const TodoProvider = ({ children }) => {
 
   const todoStats = {
     total: todos.length,
-    completed: todos.filter(todo => todo.completed).length,
-    active: todos.filter(todo => !todo.completed).length,
+    completed: todos.filter(todo => todo.status === 'completed').length,
+    active: todos.filter(todo => todo.status !== 'completed').length,
   };
 
   const value = {

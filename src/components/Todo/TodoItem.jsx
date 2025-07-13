@@ -9,10 +9,14 @@ const TodoItem = ({ todo }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   
-  const { toggleTodo, deleteTodo } = useTodos();
+  const { updateTodo, deleteTodo } = useTodos();
 
   const handleToggle = async (e) => {
-    await toggleTodo({ ...todo, completed: e.target.checked });
+    const checked = e.target.checked;
+    const payload = checked
+      ? { status: 'completed', completedAt: new Date().toISOString() }
+      : { status: 'active', completedAt: null };
+    await updateTodo(todo._id, { ...todo, ...payload });
   };
 
   const handleEdit = () => {
